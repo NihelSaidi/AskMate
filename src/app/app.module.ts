@@ -14,6 +14,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent} from './components/login/login.component';
 import { QuestionComponent } from './components/question/question.component';
+import { GptComponent } from './gpt/gpt.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { QuestionComponent } from './components/question/question.component';
     DashboardComponent,
     HomeComponent,
     LoginComponent,
-    QuestionComponent
+    QuestionComponent,
+    GptComponent
   ],
   imports: [
     BrowserModule,

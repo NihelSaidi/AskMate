@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserProfilComponent } from './components/user-profil/user-profil.component';
 import{QuestionComponent}from './components/question/question.component';
+import { GptComponent } from './gpt/gpt.component';
 const routes: Routes = [
   {
     path: 'login', component:LoginComponent
@@ -18,7 +19,8 @@ const routes: Routes = [
   ,{path:'question',component:QuestionComponent},
 
   {path:'profil',component:UserProfilComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'gpt', component:GptComponent}
 ];
 
 @NgModule({
