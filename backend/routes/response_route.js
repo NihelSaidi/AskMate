@@ -3,23 +3,23 @@ const router = express.Router()
 const responseSchema = require('../models/Responses')
 
 // Create a response
-router.post('/add-response', (req, res, next) => {
-  const newResponse = new responseSchema ({
-    contenu: req.body.contenu,
-    categorie: req.body.categorie
-  })
-  newResponse.save()
-  .then((data)=> {
-   res.status(200).json(
-    {msg: "Response has been added succesfully to the database.",
-    data: data}
-    )
-  })
-  .catch((error)=>{
-    console.log("Error in creating the reponse",error)
-  })
-  // responseSchema.create()
-})
+// router.post('/add-response', (req, res, next) => {
+//   const newResponse = new responseSchema ({
+//     contenu: req.body.contenu,
+//     categorie: req.body.categorie
+//   })
+//   newResponse.save()
+//   .then((data)=> {
+//    res.status(200).json(
+//     {msg: "Response has been added succesfully to the database.",
+//     data: data}
+//     )
+//   })
+//   .catch((error)=>{
+//     console.log("Error in creating the reponse",error)
+//   })
+//   // responseSchema.create()
+// })
 
 // Get All responses
 router.route('/').get((req, res, next) => {

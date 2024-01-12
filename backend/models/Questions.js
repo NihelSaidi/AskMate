@@ -11,9 +11,11 @@ let querySchema = new Schema({
    categorie:{
       type: String,
     },
+    reponses: [{ type: Schema.Types.ObjectId, ref: 'Response' }]
 }, {
     timestamps: true
 })
 
 
 module.exports = mongoose.model('Question', querySchema)
+

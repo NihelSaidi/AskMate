@@ -28,7 +28,6 @@ app.listen(port, () => {
 })
 
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
