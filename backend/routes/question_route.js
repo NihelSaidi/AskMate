@@ -2,6 +2,56 @@ const express = require('express')
 const router = express.Router()
 const querySchema = require('../models/Questions')
 const responseSchema = require('../models/Responses')
+const User = require('../models/Users');
+const Notification = require('../models/Notification');
+
+
+// Create a question
+router.post('/add-question', (req, res, next) => {
+  const newQuestion = new querySchema({
+    titre: req.body.titre,
+    contenu: req.body.contenu,
+    categorie: req.body.categorie,
+  });
+
+  newQuestion.save()
+    .then((data) => {
+      // Find users with expertise in the same category
+      User.find({ expertise: { $in: [newQuestion.categorie] } }, (err, categoryExperts) => {
+        if (err) {
+          console.error('Error finding category experts:', err);
+        }
+
+        // Send notifications to categoryExperts
+        const notificationPromises = categoryExperts.map(expert => {
+          const notification = new Notification({
+            message: `A new question in your expertise category: "${newQuestion.titre}"`,
+          });
+
+          notification.save((saveErr) => {
+            if (saveErr) {
+              console.error('Error saving notification:', saveErr);
+            }
+          });
+        });
+
+        Promise.all(notificationPromises)
+          .then(() => {
+            res.status(200).json({
+              msg: 'Question has been added successfully to the database.',
+              data: data,
+            });
+          })
+          .catch((promiseErr) => {
+            console.error('Error in promise:', promiseErr);
+          });
+      });
+    })
+    .catch((error) => {
+      console.log('Error in creating the question', error);
+    });
+});
+
 
 // Create a question
 router.post('/add-question', (req, res, next) => {

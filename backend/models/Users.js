@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
         },
         pwd: {
             type: String,
-        }
+        },
+        expertise: [{ type: String }], 
     }, 
     {
         timestamps: true,
