@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent} from './components/login/login.component';
 import { QuestionComponent } from './components/question/question.component';
 import { GptComponent } from './gpt/gpt.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { GptComponent } from './gpt/gpt.component';
     HomeComponent,
     LoginComponent,
     QuestionComponent,
-    GptComponent
+    GptComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

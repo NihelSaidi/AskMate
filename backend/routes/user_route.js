@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 //import User Model
 const User = require("../models/Users");
 
@@ -66,8 +65,9 @@ router.post("/signup", (req, res) => {
          User.findOne({ email: req.body.email }).then((finalResult) => {
            console.log("finalResult", finalResult);
            let userToSend = {
-             firstNamename: finalResult.firstName,
+             firstName: finalResult.firstName,
              lastName: finalResult.lastName,
+             id: finalResult._id, 
              
            };
            console.log("userToSend", userToSend);

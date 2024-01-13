@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserServiceService } from 'src/app/Services/user-service.service';
 import { MustMatch } from '../confirmPWD';
+import { FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-signup',

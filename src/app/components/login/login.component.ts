@@ -21,11 +21,13 @@ export class LoginComponent {
     if (loginForm.valid) {
       console.log(loginForm.value)
       this.isLoading = true;
-      this.userService.login(loginForm.value).subscribe(
-        response => {
+      this.userService.login(loginForm.value).subscribe({
+        next:(response) => {
           this.isLoading = false;
           if (response.message === "2") {
             console.log('Login successful! User:', response.result);
+            localStorage.setItem("connectedUser",JSON.stringify(response));
+
             this.router.navigate(['/dashboard']);
           } else if (response.message === "1") {
             console.error('Password incorrect.');
@@ -34,11 +36,11 @@ export class LoginComponent {
             this.notExist = true;
           }
         },
-        error => {
+        error:(error) => {
           this.isLoading = false;
           console.error('An error occurred during the login process.', error);
         }
-      );
+    });
     }
   }
 }
