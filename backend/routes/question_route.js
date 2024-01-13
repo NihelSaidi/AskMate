@@ -51,29 +51,6 @@ router.post('/add-question', (req, res, next) => {
       console.log('Error in creating the question', error);
     });
 });
-
-
-// Create a question
-router.post('/add-question', (req, res, next) => {
-  const newQuestion = new querySchema ({
-    titre : req.body.titre,
-    contenu: req.body.contenu,
-    categorie: req.body.categorie
-  })
-  newQuestion.save()
-  .then((data)=> {
-   res.status(200).json(
-    {msg: "Question has been added succesfully to the database.",
-    data: data}
-    )
-  })
-  .catch((error)=>{
-    console.log("Error in creating the question",error)
-  })
-// querySchema.create()
-
-})
-
 // Get All Questions
 router.route('/').get((req, res, next) => {
  querySchema.find().then((data)=> {
