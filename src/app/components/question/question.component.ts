@@ -1,49 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QuestionServiceService } from 'src/app/Services/question-service.service';
 import { UserServiceService } from 'src/app/Services/user-service.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
+// ... (other imports)
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
-export class QuestionComponent {
-  users: any;
-  id: any;
-  user: any;
-  questions: any;
-  question: any = {};
-  connectedUser: any;
+export class QuestionComponent  {
+  addQuestionForm: FormGroup; // Use this form to bind your input fields
   creationSuccess = false;
-  constructor(private questionService: QuestionServiceService, private userService: UserServiceService,private activatedRoute: ActivatedRoute) { }
+  connectedUser: any;
+  constructor(
+    private formBuilder: FormBuilder, 
+    private questionService: QuestionServiceService,
+    private userService: UserServiceService,
+    private router: Router
+  ) { }
+
   ngOnInit() {
-    // display
-
     this.connectedUser = JSON.parse(localStorage.getItem("connectedUser") || "[]");
-    // this.id = this.activatedRoute.snapshot.paramMap.get("id");
-    // console.log(this.id);
-    // When fetching user data
-    this.userService.getUser(this.connectedUser.result.id).subscribe({
-      next: (result) => {
-        this.user = result.result; // Make sure `data.result` contains the user data
-      },
-      error: (error) => console.error('There was an error!', error)
+
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    this.addQuestionForm = this.formBuilder.group({
+      titre: ['', Validators.required],
+      contenu: ['', Validators.required],
+      categorie: ['', Validators.required]
+      // You do not need to include userId here as it's included from the localStorage
     });
-
   }
-  addQuestion() {
 
-    this.questionService.addQuestion(this.question).subscribe(
-      (data) => {
-        console.log(data);
-        this.creationSuccess = true;
-        // Afficher un message de succès ou rediriger vers une autre page
-      },
-      (error) => {
-        console.log("Error in creating the question", error);
-        // Afficher un message d'erreur
-      }
-    );
-  }
+  // ...
+
+addQuestion() {
+  // Get the connected user data from localStorage
+  const questionWithUser = {
+    ...this.addQuestionForm.value,
+    userId: this.connectedUser.result.id // Attach the connected user's ID
+  };
+
+  this.questionService.addQuestion(questionWithUser).subscribe({
+    next: (response) => {
+      console.log("Question added successfully", response);
+      this.creationSuccess = true;
+      this.router.navigate(['dashboard','getquest']);
+    },
+    error: (error) => {
+      console.error("Error adding question", error);
+    }
+  });
+}
 }

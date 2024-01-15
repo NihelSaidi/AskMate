@@ -14,8 +14,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent} from './components/login/login.component';
 import { QuestionComponent } from './components/question/question.component';
-import { GptComponent } from './gpt/gpt.component';
+import { GptComponent } from './components/gpt/gpt.component';
 import { SearchComponent } from './components/search/search.component';
+import { GetquestionComponent } from './components/getquestion/getquestion.component';
+import { ReponseComponent } from './components/reponse/reponse.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { SearchComponent } from './components/search/search.component';
     LoginComponent,
     QuestionComponent,
     GptComponent,
-    SearchComponent
+    SearchComponent,
+    GetquestionComponent,
+    ReponseComponent
   ],
   imports: [
     BrowserModule,

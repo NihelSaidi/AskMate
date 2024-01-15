@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LogoutService } from 'src/app/Services/logout.service';
 import { QuestionServiceService } from 'src/app/Services/question-service.service';
 import { SearchResultsService } from 'src/app/Services/search-results.service';
 import { SearchService } from 'src/app/Services/search.service';
@@ -20,9 +21,13 @@ export class DashboardComponent {
   constructor(private activatedRoute: ActivatedRoute, private userService: UserServiceService,
     private questionService: QuestionServiceService, private searchService: SearchService,
     private router: Router,
-    private searchResultsService:SearchResultsService) { }
+    private searchResultsService: SearchResultsService,
+    private logoutService: LogoutService) { }
 
   ngOnInit() {
+    this.connectedUser = JSON.parse(localStorage.getItem("connectedUser") || "{}");
+    this.id = this.activatedRoute.snapshot.paramMap.get("id");
+    console.log(this.id);
     this.questionService.getQuestions().subscribe({
       next: (data) => {
         console.log(data); // Check the structure of the received data
@@ -33,16 +38,18 @@ export class DashboardComponent {
       }
     });
 
-    this.connectedUser = JSON.parse(localStorage.getItem("connectedUser") || "[]");
-    // this.id = this.activatedRoute.snapshot.paramMap.get("id");
-    // console.log(this.id);
-    // When fetching user data
-    this.userService.getUser(this.connectedUser.result.id).subscribe({
-      next: (result) => {
-        this.user = result.result; // Make sure `data.result` contains the user data
-      },
-      error: (error) => console.error('There was an error!', error)
-    });
+   
+
+    // // When fetching user data
+    // this.userService.getUser(this.id).subscribe({
+    //   next: (result) => {
+    //     this.user = result.result;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching user details:', error);
+    //   }
+    // });
+    
 
 
 
@@ -58,7 +65,7 @@ export class DashboardComponent {
           // Pass the search results to the shared service
           this.searchResultsService.setSearchResults(this.questions);
 
-          this.router.navigate(['/search']);
+          this.router.navigate(['dashboard', 'search']);
         },
         error: (error) => {
           console.error('There was an error!', error);
@@ -67,7 +74,11 @@ export class DashboardComponent {
       });
     }
   }
-
+  logout() {
+    this.logoutService.logout().subscribe(() => {
+      this.router.navigate(['login']);
+    });
+  }
   // Method to get the questions on initialization or when needed
   // getQuestionSearch() {
   //   this.searchService.runPythonScript().subscribe({

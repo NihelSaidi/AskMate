@@ -7,25 +7,53 @@ const Notification = require('../models/Notification');
 
 
 // Create a question
-router.post('/add-question', (req, res, next) => {
-  const newQuestion = new querySchema ({
-    titre : req.body.titre,
-    contenu: req.body.contenu,
-    categorie: req.body.categorie
-  })
-  newQuestion.save()
-  .then((data)=> {
-   res.status(200).json(
-    {msg: "Question has been added succesfully to the database.",
-    data: data}
-    )
-  })
-  .catch((error)=>{
-    console.log("Error in creating the question",error)
-  })
-// querySchema.create()
+// router.post('/add-question', (req, res, next) => {
+//   const newQuestion = new querySchema({
+//     titre: req.body.titre,
+//     contenu: req.body.contenu,
+//     categorie: req.body.categorie
+//   })
+//   newQuestion.save()
+//     .then((data) => {
+//       res.status(200).json(
+//         {
+//           msg: "Question has been added succesfully to the database.",
+//           data: data
+//         }
+//       )
+//     })
+//     .catch((error) => {
+//       console.log("Error in creating the question", error)
+//     })
+//   // querySchema.create()
 
-})
+// })
+
+router.post('/add-question', async (req, res, next) => {
+  try {
+    // ... (existing code)
+    const newQuestion = new querySchema({
+      titre: req.body.titre,
+      contenu: req.body.contenu,
+      categorie: req.body.categorie,
+      userId: req.body.userId // Include userId in the question
+    });
+    const savedQuestion = await newQuestion.save();
+
+    // Send back the entire savedQuestion document along with a message
+    res.status(200).json({
+      msg: 'Question has been added successfully to the database.',
+      question: savedQuestion // This should include the userId if it's saved in the document
+    });
+  } catch (error) {
+    console.log('Error in creating the question', error);
+    res.status(500).json({ msg: 'Internal Server Error' });
+  }
+});
+
+
+
+
 // Get All Questions
 router.route('/get-question').get((req, res, next) => {
   querySchema.find().then(
@@ -133,7 +161,7 @@ router.post('/questions/:questionId/reponses', async (req, res) => {
     // Optionnel, si vous souhaitez garder la trace dans la question
     question.reponses.push(reponseEnregistree); //Ajouter la réponse dans le tableau des réponses de la question
     await question.save();
-      
+
     res.status(201).json(reponseEnregistree);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -145,7 +173,7 @@ router.post('/questions/:questionId/reponses', async (req, res) => {
 router.get('/questions/:questionId', async (req, res) => {
   try {
     const questionAvecReponses = await querySchema.findById(req.params.questionId)
-      .populate('reponses'); 
+      .populate('reponses');
     if (!questionAvecReponses) {
       return res.status(404).json({ message: 'Question introuvable.' });
     }
@@ -154,9 +182,9 @@ router.get('/questions/:questionId', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
- 
+
 });
-  
+
 
 
 module.exports = router

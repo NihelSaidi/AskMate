@@ -8,14 +8,13 @@ let querySchema = new Schema({
     contenu: {
         type: String,
     },
-   categorie:{
-      type: String,
+    categorie: {
+        type: String,
     },
+    userId:{ type:String}, // New field to store the user ID
     reponses: [{ type: Schema.Types.ObjectId, ref: 'Response' }]
 }, {
     timestamps: true
-})
+});
 
-
-module.exports = mongoose.model('Question', querySchema)
-
+module.exports = mongoose.model('Question', querySchema);

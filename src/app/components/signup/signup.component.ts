@@ -31,7 +31,7 @@ export class SignupComponent {
       (data) => {
         console.log('Signup with success');
         this.accountCreationSuccess = true;
-        // this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       },
       (error) => {
         console.error('Signup failed', error);

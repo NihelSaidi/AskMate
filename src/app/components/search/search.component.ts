@@ -49,7 +49,7 @@ export class SearchComponent {
         next: (data) => {
           this.questions = data; // Assuming 'results' is the array of questions
           console.log('the search is working')
-          this.router.navigate(['/search']);
+          this.router.navigate(['dashboard','search']);
         },
         error: (error) => {
           console.error('There was an error!', error);
@@ -64,11 +64,11 @@ export class SearchComponent {
 
   navigateToChatbot(): void {
     // Implement navigation to the chatbot page
-    this.router.navigate(['/chatbot']);
+    this.router.navigate(['dashboard','chatbot']);
   }
 
   navigateToPublishQuestion(): void {
     // Implement navigation to the publish question page
-    this.router.navigate(['/search']);
+    this.router.navigate(['dashboard','question']);
   }
 }
